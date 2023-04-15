@@ -1,7 +1,7 @@
 import './App.css';
 import { Component } from 'react';
 import ContactForm from 'components/contactForm';
-// import Filter from 'components/filter';
+import Filter from 'components/filter';
 import { ContactList } from 'components/contactList';
 
 class App extends Component {
@@ -12,7 +12,7 @@ class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    // name: '',
+    filter: '',
   };
 
   addNewContact = ({ id, name, number }) => {
@@ -22,16 +22,29 @@ class App extends Component {
     this.setState({ contacts: newContacts });
   };
 
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
+
     return (
       <div className="container">
         <h1>Phonebook</h1>
         <ContactForm onAddNewContact={this.addNewContact} />
 
         <h2>Contacts</h2>
-
-        <ContactList contacts={contacts} />
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList contacts={this.getVisibleContacts()} />
       </div>
     );
   }
