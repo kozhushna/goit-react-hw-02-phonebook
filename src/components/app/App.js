@@ -18,8 +18,14 @@ class App extends Component {
   addNewContact = ({ id, name, number }) => {
     const { contacts } = this.state;
     const newContacts = [...contacts];
-    newContacts.push({ id: id, name: name, number: number });
-    this.setState({ contacts: newContacts });
+    if (
+      contacts.findIndex(c => c.name.toLowerCase() === name.toLowerCase()) < 0
+    ) {
+      newContacts.push({ id: id, name: name, number: number });
+      this.setState({ contacts: newContacts });
+    } else {
+      alert(`${name} is already in contacts.`);
+    }
   };
 
   getVisibleContacts = () => {
@@ -35,7 +41,7 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
 
     return (
       <div className="container">
