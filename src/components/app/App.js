@@ -28,6 +28,12 @@ class App extends Component {
     }
   };
 
+  deleteContact = id => {
+    const { contacts } = this.state;
+    const filteredContacts = contacts.filter(c => c.id !== id);
+    this.setState({ contacts: filteredContacts });
+  };
+
   getVisibleContacts = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
@@ -50,7 +56,10 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList contacts={this.getVisibleContacts()} />
+        <ContactList
+          contacts={this.getVisibleContacts()}
+          onDeleteContact={this.deleteContact}
+        />
       </div>
     );
   }
