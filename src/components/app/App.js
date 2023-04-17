@@ -17,21 +17,31 @@ class App extends Component {
 
   addNewContact = ({ id, name, number }) => {
     const { contacts } = this.state;
-    const newContacts = [...contacts];
-    if (
-      contacts.findIndex(c => c.name.toLowerCase() === name.toLowerCase()) < 0
-    ) {
-      newContacts.push({ id: id, name: name, number: number });
-      this.setState({ contacts: newContacts });
-    } else {
+    const isExists =
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      ) !== undefined;
+
+    if (isExists) {
       alert(`${name} is already in contacts.`);
+      return;
     }
+
+    this.setState(({ contacts }) => {
+      const newContacts = [...contacts];
+      newContacts.push({
+        id: id,
+        name: name,
+        number: number,
+      });
+      return { contacts: newContacts };
+    });
   };
 
   deleteContact = id => {
-    const { contacts } = this.state;
-    const filteredContacts = contacts.filter(c => c.id !== id);
-    this.setState({ contacts: filteredContacts });
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(c => c.id !== id),
+    }));
   };
 
   getVisibleContacts = () => {

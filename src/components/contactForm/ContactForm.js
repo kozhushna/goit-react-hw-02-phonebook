@@ -19,12 +19,8 @@ class ContactForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
-    const { name, number } = {
-      ...this.state,
-    };
+    this.props.onAddNewContact({ id: nanoid(), ...this.state });
     this.setState({ ...initialState });
-    this.props.onAddNewContact({ id: nanoid(), name: name, number: number });
   };
 
   render() {
