@@ -15,32 +15,27 @@ class App extends Component {
     filter: '',
   };
 
-  addNewContact = ({ id, name, number }) => {
+  addNewContact = item => {
     const { contacts } = this.state;
-    const isExists =
-      contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
-      ) !== undefined;
+    const existen = contacts.find(
+      contact => contact.name.toLowerCase() === item.name.toLowerCase()
+    );
 
-    if (isExists) {
-      alert(`${name} is already in contacts.`);
+    if (existen) {
+      alert(`${item.name} is already in contacts.`);
       return;
     }
 
     this.setState(({ contacts }) => {
-      const newContacts = [...contacts];
-      newContacts.push({
-        id: id,
-        name: name,
-        number: number,
-      });
-      return { contacts: newContacts };
+      return {
+        contacts: [...contacts, item],
+      };
     });
   };
 
   deleteContact = id => {
     this.setState(({ contacts }) => ({
-      contacts: contacts.filter(c => c.id !== id),
+      contacts: contacts.filter(contact => contact.id !== id),
     }));
   };
 
